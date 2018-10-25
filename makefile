@@ -10,11 +10,11 @@ OBJS = main.o Building.o Instructor.o Menu.o Person.o Student.o University.o
 SRCS = main.cpp  Building.cpp Instructor.cpp Menu.cpp Person.cpp Student.cpp University.cpp
 HEADERS = Building.cpp Instructor.cpp Menu.hpp Person.cpp Student.cpp University.cpp
 
-lab4: $(OBJS)
-	$(CXX) $(CXXFLAGS) $(OBJS) -o lab4
+lab5: $(OBJS)
+	$(CXX) $(CXXFLAGS) $(OBJS) -o lab5
 
 $(OBJS): $(SRCS) $(HEADERS)
 	$(CXX) $(CXXFLAGS) -c $(@:.o=.cpp)
 
 clean:
-	rm *.o lab4
+	rm *.o lab5
