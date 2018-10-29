@@ -48,11 +48,13 @@ In addition to the 3 function options inside the first menu, the menu must also 
 
 **File organization**
 
-You can put all your recursive functions in a single .cpp file or separate them into different .cpp files. However, you must separate the implementation and declaration in .cpp and .hpp files. **Note:** You do not need to make a class for this lab.
+You can put all your recursive functions in a single .cpp file or separate them into different .cpp files. However, you must separate the implementation and declaration in .cpp and .hpp files.
+**Note:** You do not need to make a class for this lab.
 
 **What you need to submit**
 * All the program files including header and source files (.cpp/.hpp)
 * Makefile
+
 **Important:** Put all the files in a single .zip file and submit it on Canvas.
 
 **Grading**
