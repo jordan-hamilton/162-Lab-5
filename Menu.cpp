@@ -7,6 +7,39 @@ using std::string;
 
 
 /***********************************************************************************************
+** Description: Default constructor that initializes data members.
+***********************************************************************************************/
+Menu::Menu() {
+  menuPrompt = "";
+  lastEnteredString = "";
+  intArray = nullptr;
+}
+
+
+/***********************************************************************************************
+** Description: Overloaded constructor that takes a string to initialize the menu's prompt.
+***********************************************************************************************/
+Menu::Menu(const std::string &prompt) {
+  menuPrompt = prompt;
+  lastEnteredString = "";
+  intArray = nullptr;
+}
+
+
+/***********************************************************************************************
+** Description: Destructor that frees memory dynamically allocated for the menu's intArray.
+***********************************************************************************************/
+Menu::~Menu() {
+
+  if (intArray) {
+    delete [] intArray;
+    intArray = nullptr;
+  }
+
+}
+
+
+/***********************************************************************************************
 ** Description: Prints a list of all options in the options vector for the user to select an
 ** option from the menu.
 ***********************************************************************************************/
@@ -31,21 +64,149 @@ void Menu::addMenuItem(const string &menuItem) {
 ** prompt is repeated. A boolean is passed to specify whether the entire menu should be
 ** displayed along with the prompt for a selection.
 ***********************************************************************************************/
-int Menu::getIntChoiceFromPrompt(const string &prompt, const int &minVal, const int &maxVal, bool displayTheMenu) {
+int Menu::getIntChoiceFromPrompt(const string &prompt, const int &minVal, const int &maxVal, const bool &displayTheMenu) {
 
   string userInput;
 
   do {
+
     cout << prompt << endl;
+
     if (displayTheMenu) {
       displayMenu();
     }
+
     cout << "Valid input range: [" << minVal << " - " << maxVal << "]: ";
     getline(cin, userInput);
-  } while(!validateInput(userInput) || !validateRange(stoi(userInput), minVal, maxVal));
+
+  } while( !validateInput(userInput) || !validateRange( stoi(userInput), minVal, maxVal ) );
 
 return stoi(userInput);
 
+}
+
+
+/***********************************************************************************************
+** Description: Takes references to integers that output valid values to hint that the user
+** should enter an integer value within the entered values. Input is passed to validateInput and
+** validateRange to verify that the input is an integer and falls within a valid range for the
+** prompt, then the integer value the user entered is returned if it was valid. Otherwise, the
+** prompt is repeated. A boolean is passed to specify whether the entire menu should be
+** displayed along with the prompt for a selection. If the menu was initialized with a prompt,
+** this is displayed prior to accepting user input.
+***********************************************************************************************/
+int Menu::getIntChoiceFromPrompt(const int &minVal, const int &maxVal, const bool &displayTheMenu) {
+
+  string userInput;
+
+  do {
+
+    if (!menuPrompt.empty()) {
+      cout << menuPrompt << endl;
+    }
+
+    if (displayTheMenu) {
+      displayMenu();
+    }
+
+    cout << "Valid input range: [" << minVal << " - " << maxVal << "] ";
+    getline(cin, userInput);
+
+  } while( !validateInput(userInput) || !validateRange( stoi(userInput), minVal, maxVal ) );
+
+return stoi(userInput);
+
+}
+
+
+/***********************************************************************************************
+** Description: Takes references to a string to display to the user before accepting input, and
+** a reference to a boolean to output possible menu choices if set to true. User input is then
+** stored in the lastEnteredString data member and returned.
+***********************************************************************************************/
+std::string Menu::getStringFromPrompt(const std::string &prompt, const bool &displayTheMenu) {
+
+  cout << prompt << endl;
+
+  if (displayTheMenu) {
+    displayMenu();
+  }
+
+  getline(cin, lastEnteredString);
+
+  return getEnteredString();
+
+}
+
+
+/***********************************************************************************************
+** Description: Takes a reference to a boolean to output possible menu choices if set to true.
+** If the menu was initialized with a prompt, this is displayed prior to accepting user input.
+** User input is then stored in the lastEnteredString data member and returned.
+***********************************************************************************************/
+std::string Menu::getStringFromPrompt(const bool &displayTheMenu) {
+
+  if (!menuPrompt.empty()) {
+    cout << menuPrompt << endl;
+  }
+
+  if (displayTheMenu) {
+    displayMenu();
+  }
+
+  getline(cin, lastEnteredString);
+
+  return getEnteredString();
+
+}
+
+
+/*********************************************************************
+** Description: Dynamically allocates memory for an array of integers,
+** then sets the intArraySize variable to the passed integer so the
+** size of the array can be tracked.
+*********************************************************************/
+void Menu::makeIntArray(int arraySize) {
+  intArray = new int[arraySize];
+  setIntArraySize(arraySize);
+}
+
+
+/*********************************************************************
+** Description: Prompts the user to enter integer values for each
+** element in the array and performs validation to ensure an integer.
+** was entered.
+*********************************************************************/
+void Menu::populateIntArray() {
+  for (int i = 0; i < getIntArraySize(); i++) {
+    intArray[i] = getIntChoiceFromPrompt("Enter an integer", 0, 100000, false);
+  }
+
+}
+
+
+/*********************************************************************
+** Description: Returns a pointer to the intArray.
+*********************************************************************/
+int* Menu::getIntArray() {
+      return intArray;
+}
+
+
+/*********************************************************************
+** Description: Returns an integer representing the size of the
+** integer array.
+*********************************************************************/
+int Menu::getIntArraySize() {
+  return intArraySize;
+}
+
+
+/*********************************************************************
+** Description: Takes an integer to set the intArraySize data member.
+*********************************************************************/
+void Menu::setIntArraySize(int arraySize) {
+  intArraySize = arraySize;
 }
 
 
@@ -56,6 +217,24 @@ return stoi(userInput);
 *********************************************************************/
 int Menu::getMenuChoices() {
       return options.size();
+}
+
+
+/*********************************************************************
+** Description: Returns the last string entered by the user that was
+** stored in the lastEnteredString data member.
+*********************************************************************/
+string Menu::getEnteredString() {
+      return lastEnteredString;
+}
+
+
+/*********************************************************************
+** Description: Takes a constant reference to a string, then sets
+** the data member lastEnteredString to the provided value.
+*********************************************************************/
+void Menu::setEnteredString(const std::string &inputStr) {
+  lastEnteredString = inputStr;
 }
 
 
