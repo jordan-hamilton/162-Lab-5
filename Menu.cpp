@@ -252,7 +252,7 @@ bool Menu::validateInput(const string &inputStr) {
   }
 
   for (unsigned int i = 0; i < inputStr.length(); i++) {
-    if (!isdigit(inputStr[i])) {
+    if (!isdigit(inputStr[i]) || inputStr[i] != '-') {
       isValid = false;
     }
   }
